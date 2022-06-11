@@ -1,12 +1,23 @@
-use std::net::{IpAddr};
+use std::net::{Ipv4Addr};
 use std::fmt::{self, Formatter};
 use chrono::{Date, Utc};
-use clap::{App, arg};
+use clap::{Command, arg};
+use rand::Rng;
 
 struct User {
     name: String,
     id: usize,
-    ip: IpAddr,
+    ip: Ipv4Addr,
+}
+
+impl Default for User {
+    fn default() -> Self {
+        User {
+            name: String::from("host"),
+            id: rand::thread_rng().gen(),
+            ip: Ipv4Addr::new(127, 0, 0, 1),
+        }
+    }
 }
 
 impl fmt::Display for User {
@@ -29,7 +40,7 @@ impl fmt::Display for Message {
 }
 
 fn main() {
-    let matches = App::new("Cobalt Backend Testing")
+    let matches = Command::new("Cobalt Backend Testing")
         .author("Hadi Faraz, <hadifaraz52@protonmail.com>")
         .version("0.1.0")
         .about("Sends a message to another computer with the power of TCP.")
@@ -37,7 +48,12 @@ fn main() {
             arg!(-a --address <ADDRESS> "IPv4 address to send message to")
                 .required(false)
                 .allow_invalid_utf8(false),
-        );
+        )
+        .arg(
+            arg!(-n --name <USERNAME> "Set your username for the application")
+                .required(false)
+                .allow_invalid_utf8(true),
+        ).get_matches();
 
-    if let Some("address") = matches.value_of()
+
 }
