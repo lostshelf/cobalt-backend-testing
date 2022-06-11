@@ -73,6 +73,4 @@ fn main() {
     })).unwrap_or_else(|| {
         Ipv4Addr::new(127, 0, 0, 1)
     });
-
-
 }
